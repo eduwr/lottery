@@ -61,4 +61,37 @@ describe("Lottery Contract", () => {
     assert.strictEqual(accounts[2], players[2]);
     assert.strictEqual(3, players.length);
   });
+
+  it("requires more than 0.01 ether to enter", async () => {
+    let error;
+    try {
+      await lottery.methods.enter().send({
+        from: accounts[0],
+        value: web3.utils.toWei("0.01", "ether"),
+      });
+    } catch (err) {
+      error = err;
+    }
+
+    assert(error);
+  });
+
+  it("only manager can call pickWinner", async () => {
+    let check;
+
+    try {
+      await lottery.methods.enter().send({
+        from: accounts[1],
+        value: web3.utils.toWei("0.02", "ether"),
+      });
+
+      await lottery.methods.pickWinner().send({
+        from: accounts[1],
+      });
+    } catch (err) {
+      check = "fail";
+    }
+
+    assert.strictEqual("fail", check);
+  });
 });
