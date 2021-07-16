@@ -1,11 +1,12 @@
+const fs = require("fs");
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const Web3 = require("web3");
 const { interface, bytecode } = require("./compile");
 
 const provider = new HDWalletProvider(
-  "juice bicycle seek common shield hello below angry source share exact mobile",
+  "they front exile forum lottery depart oven install demand trophy shallow wait",
   // remember to change this to your own phrase!
-  "https://rinkeby.infura.io/v3/15c1d32581894b88a92d8d9e519e476c"
+  "https://rinkeby.infura.io/v3/35591972e70f47c78fbe00c49ea4b9f7"
   // remember to change this to your own endpoint!
 );
 const web3 = new Web3(provider);
@@ -19,6 +20,12 @@ const deploy = async () => {
     .deploy({ data: bytecode })
     .send({ gas: "1000000", from: accounts[0] });
 
+  fs.writeFileSync(
+    "./abis/lottery.json",
+    JSON.stringify(interface).replace(/\\/g, "")
+  );
+  console.log(interface);
   console.log("Contract deployed to", result.options.address);
 };
+
 deploy();
